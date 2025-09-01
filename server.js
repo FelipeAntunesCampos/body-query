@@ -241,7 +241,7 @@ app.post('/animais', (req, res) => {
   });
 });
 
-/*Mostre o material de varinha mais comum
+//Mostra quantos bruxos
 app.get("/stats", (req, res) => {
   const {casa} = req.query;
   let resultadoConsulta = bruxos;
@@ -250,9 +250,10 @@ app.get("/stats", (req, res) => {
   }
   res.status(200).json({
     bruxos: `${casa} = ${resultadoConsulta.length}`
-  })
+  });
+});
 
- Mostre o material de varinha mais comum
+ /*Mostre o material de varinha mais comum
   const contadorDeMateriais = {};
 
   for (let i = 0; i < varinhas.length; i++) {
@@ -283,9 +284,8 @@ app.get("/stats", (req, res) => {
     })
   }
 });
-
+*/ 
 // Iniciar servidor escutando na porta definida
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
 });
-*/ 
