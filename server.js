@@ -46,7 +46,246 @@ app.get('/bruxos', (req, res) => {
     });
 });
 
+app.post('/bruxos', (req, res) => {
+    // Acessando dados do body
+    //mudar o nodemon para node no package
+    const { nome, casa, ano, varinha, mascote, patrono, especialidade, vivo } = req.body;
+  ''
+    console.log('Dados recebidos:', req.body);
+    
+    // Validação básica
+    if (!nome || !casa) {
+        return res.status(400).json({
+            success: false,
+            message: "Nome e casa são obrigatórios para um bruxo!"
+        });
+    }
+    
+    // Criar novo bruxo
+    const novoBruxo = {
+        id: bruxos.length + 1,
+        nome,
+        casa: casa,
+        ano: parseInt(ano),
+        varinha: varinha,
+        mascote: mascote,
+        patrono: patrono,
+        especialidade: especialidade || "Em desenvolvimento",
+        vivo: vivo
+    };
+    
+    // Adicionar à lista de bruxos
+    bruxos.push(novoBruxo);
+    
+    res.status(201).json({
+        success: true,
+        message: "Novo bruxo adicionado a Hogwarts!",
+        data: novoBruxo
+    });
+});
+
+//Get para varinhas
+app.get('/varinhas', (req, res) => {
+  const { material, nucleo, comprimento} = req.query;
+  let varinhasEncontradas = varinhas;
+  
+  if (material) {
+    varinhasEncontradas = varinhasEncontradas.filter(b => b.material.toLowerCase().includes(material.toLowerCase()));
+  }
+
+  if (nucleo) {
+    varinhasEncontradas = varinhasEncontradas.filter(b => b.nucleo.toLowerCase().includes(nucleo.toLowerCase()));
+  }
+
+  if (comprimento) {
+    varinhasEncontradas = varinhasEncontradas.filter(b => b.comprimento.toLowerCase().includes(comprimento.toLowerCase()));
+  }
+
+  res.status(200).json({
+    total: varinhasEncontradas.length,
+    data: varinhasEncontradas
+  });
+});
+
+//criar varinhas
+app.post('/varinhas', (req, res) => {
+  const { materia, nucleo, comprimento } = req.body;
+''
+  console.log('Dados recebidos:', req.body);
+  
+  // Validação básica
+  if (!materia, !nucleo, !comprimento) {
+      return res.status(400).json({
+          success: false,
+          message: "materia, nucleo, comprimento são obrigatorios para criar uma varinha!"
+      });
+  }
+  
+  // Criar nova varinha
+  const novaVarinha = {
+      id: varinhas.length + 1,
+      materia,
+      nucleo,
+      comprimento
+  };
+  
+  // Adicionar à lista de varinhas
+  varinhas.push(novaVarinha);
+  
+  res.status(201).json({
+      success: true,
+      message: "Nova varinha adicionada a Hogwarts!",
+      data: novaVarinha
+  });
+});
+
+
+//Get para Poções
+app.get('/pocoes', (req, res) => {
+  const { nome, efeito } = req.query;
+  let pocoesEncontradas = pocoes;
+
+  if (nome) {
+    pocoesEncontradas = pocoesEncontradas.filter(b => b.nome.toLowerCase().includes(nome.toLowerCase()));
+  }
+
+  if (efeito) {
+    pocoesEncontradas = pocoesEncontradas.filter(b => b.efeito.toLowerCase().includes(efeito.toLowerCase()));
+  }
+
+  res.status(200).json({
+    total: pocoesEncontradas.length,
+    data: pocoesEncontradas
+  });
+});
+
+//criar Poções
+app.post('/pocoes', (req, res) => {
+  const { nome, efeito } = req.body;
+
+  console.log('Dados recebidos:', req.body);
+  
+  // Validação básica
+  if (!nome || !efeito) {
+      return res.status(400).json({
+          success: false,
+          message: "nome, efeito, são obrigatorios para criar uma poção!"
+      });
+  }
+  
+  // Criar nova poção'
+  const novaPocao = {
+      id: pocoes.length + 1,
+      nome,
+      efeito
+  };
+  
+  // Adicionar à lista de poções
+  pocoes.push(novaPocao);
+  
+  res.status(201).json({
+      success: true,
+      message: "Nova poção adicionada a Hogwarts!",
+      data: novaPocao
+  });
+});
+
+
+//Get para Animais
+app.get('/animais', (req, res) => {
+  const { nome, tipo } = req.query;
+  let animaisEncontrados = animais;
+
+  if (nome) {
+    animaisEncontrados = animaisEncontrados.filter(b => b.nome.toLowerCase().includes(nome.toLowerCase()));
+  }
+
+  if (tipo) {
+    animaisEncontrados = animaisEncontrados.filter(b => b.tipo.toLowerCase().includes(tipo.toLowerCase()));
+  }
+
+  res.status(200).json({
+    total: animaisEncontrados.length,
+    data: animaisEncontrados
+  });
+});
+
+//criar Poções
+app.post('/animais', (req, res) => {
+  const { nome, tipo } = req.body;
+
+  console.log('Dados recebidos:', req.body);
+  
+  // Validação básica
+  if (!nome || !tipo) {
+      return res.status(400).json({
+          success: false,
+          message: "nome, tipo, são obrigatorios para criar um animal!"
+      });
+  }
+  
+  // Criar nova poção'
+  const novoAnimal = {
+      id: animais.length + 1,
+      nome,
+      tipo
+  };
+  
+  // Adicionar à lista de bruxos
+  animais.push(novoAnimal);
+  
+  res.status(201).json({
+      success: true,
+      message: "Nova poção adicionada a Hogwarts!",
+      data: novoAnimal
+  });
+});
+
+/*Mostre o material de varinha mais comum
+app.get("/stats", (req, res) => {
+  const {casa} = req.query;
+  let resultadoConsulta = bruxos;
+  if (casa) {
+    resultadoConsulta = resultadoConsulta.filter(b => b.casa.toLowerCase().includes(casa.toLowerCase()));
+  }
+  res.status(200).json({
+    bruxos: `${casa} = ${resultadoConsulta.length}`
+  })
+
+ Mostre o material de varinha mais comum
+  const contadorDeMateriais = {};
+
+  for (let i = 0; i < varinhas.length; i++) {
+    const varinha = varinhas[i];
+    let material = varinha.material;
+    if (contadorDeMateriais[material]) {
+      contadorDeMateriais[material]++;
+    } else {
+      contadorDeMateriais[material] = 1;
+    }
+  }
+
+  let materialMaisComum;
+  let contagemMaxima = 0;
+  for (let a = 0; a < material.length; a++) {
+    let material = varinhas[i];
+    const contagem = contadorDeMateriais[material];
+
+    if (contagem > contagemMaxima) {
+      contagemMaxima = contagem;
+      materialMaisComum = material;
+    } 
+  }
+
+  if (contadorDeMateriais) {
+      res.status(200).json({
+      resultado: `O material mais usado é ${materialMaisComum}`
+    })
+  }
+});
+
 // Iniciar servidor escutando na porta definida
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
 });
+*/ 
