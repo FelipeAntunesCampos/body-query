@@ -253,38 +253,43 @@ app.get("/stats", (req, res) => {
   });
 });
 
- /*Mostre o material de varinha mais comum
+ // Rota para mostrar o material de varinha mais comum
+app.get('/varinhas/material-mais-comum', (req, res) => {
   const contadorDeMateriais = {};
 
-  for (let i = 0; i < varinhas.length; i++) {
-    const varinha = varinhas[i];
-    let material = varinha.material;
-    if (contadorDeMateriais[material]) {
-      contadorDeMateriais[material]++;
-    } else {
-      contadorDeMateriais[material] = 1;
-    }
+  // Conta a frequência de cada material
+  for (const varinha of varinhas) {
+    const material = varinha.material;
+    contadorDeMateriais[material] = (contadorDeMateriais[material] || 0) + 1;
   }
 
-  let materialMaisComum;
+  let materialMaisComum = null;
   let contagemMaxima = 0;
-  for (let a = 0; a < material.length; a++) {
-    let material = varinhas[i];
-    const contagem = contadorDeMateriais[material];
 
+  // Encontra o material com a maior contagem
+  for (const material in contadorDeMateriais) {
+    const contagem = contadorDeMateriais[material];
+    
     if (contagem > contagemMaxima) {
       contagemMaxima = contagem;
       materialMaisComum = material;
-    } 
+    }
   }
 
-  if (contadorDeMateriais) {
-      res.status(200).json({
-      resultado: `O material mais usado é ${materialMaisComum}`
-    })
+  // Verifica se encontrou um resultado antes de enviar a resposta
+  if (materialMaisComum) {
+    res.status(200).json({
+      resultado: `O material mais usado é ${materialMaisComum} (apareceu ${contagemMaxima} vezes)`
+    });
+  } else {
+    // Caso o array de varinhas esteja vazio
+    res.status(404).json({
+      erro: "Não foi possível encontrar o material mais comum. Verifique se o array de varinhas está preenchido."
+    });
   }
 });
-*/ 
+
+
 // Iniciar servidor escutando na porta definida
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
